@@ -104,6 +104,7 @@ public class RFIProcessingService {
         String decision = saved.getApproved();
         if ("Released".equalsIgnoreCase(decision)) {
             payload.getRfiTransaction().setPendingWith("8766425964");
+            payload.setProcess("QA Approval");
             wfReleased.startWorkflow(rfiId);
             updateQaApproval(rfiId);
 
@@ -111,6 +112,8 @@ public class RFIProcessingService {
             // wfReleased.stampActualDateCompleted(rfiId);
         } else if ("Rework".equalsIgnoreCase(decision)) {
             payload.getRfiTransaction().setPendingWith("6380379124");
+            payload.setProcess("QA Approval");
+
             payload.getRfiTransaction().setDocStatus("Modification");
 
             wfRework.startReworkWorkflow(rfiId);
@@ -120,6 +123,8 @@ public class RFIProcessingService {
         } else if ("Reject".equalsIgnoreCase(decision)) {
             wfReject.startRejectWorkflow(rfiId);
             payload.getRfiTransaction().setPendingWith("Summary");
+            payload.setProcess("QA Approval");
+
             payload.getRfiTransaction().setDocStatus("Summary");
 
 
@@ -128,6 +133,8 @@ public class RFIProcessingService {
             // wfReject.stampActualDateCompleted(rfiId);
         } else if ("Release and Deviation".equalsIgnoreCase(decision)) {
             payload.getRfiTransaction().setPendingWith("8766425964");
+            payload.setProcess("QA Approval");
+
 
             wfApprovalReleaseDeviation.startReleaseAndDeviation(rfiId);
             updateQaReleaseWithDevation(rfiId);
@@ -270,6 +277,7 @@ public class RFIProcessingService {
 
         if ("Released".equalsIgnoreCase(updated.getApproved())) {
             existing.getRfiTransaction().setPendingWith("Summary");
+            existing.setProcess("AE Presentation Approval");
 
             var1.startWorkflow(rfiId); // ← call this service
             updateReleasedInClientApproval(rfiId);
@@ -278,6 +286,8 @@ public class RFIProcessingService {
         if ("Release and Deviation".equalsIgnoreCase(updated.getApproved())) {
             existing.getRfiTransaction().setPendingWith("Summary");
             existing.getRfiTransaction().setDocStatus("Summary");
+            existing.setProcess("AE Presentation Approval");
+
 
             var1.startWorkflow(rfiId); // ← call this service
             updateReleasedAndDevationInClientApproval(rfiId);
@@ -285,6 +295,7 @@ public class RFIProcessingService {
 
         if ("Reject".equalsIgnoreCase(updated.getApproved())) {
             existing.getRfiTransaction().setPendingWith("Summary");
+            existing.setProcess("AE Presentation Approval");
 
             existing.getRfiTransaction().setDocStatus("Summary");
 
@@ -294,6 +305,7 @@ public class RFIProcessingService {
 
         if ("Rework".equalsIgnoreCase(updated.getApproved())) {
             existing.getRfiTransaction().setPendingWith("6380379124");
+            existing.setProcess("AE Presentation Approval");
 
             existing.getRfiTransaction().setDocStatus("Rework");
 
